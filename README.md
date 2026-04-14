@@ -170,18 +170,20 @@ University of Westminster – Computer Science
 
 ---
 
-## PART 1 Q1: In your report, explain the default lifecycle of a JAX-RS Resource class. Is a new instance instantiated for every incoming request, or does the runtime treat it as asingleton? Elaborate on how this architectural decision impacts the way you manage and synchronize your in memory data structures $(maps/lists)$ to prevent data loss or race conditions.
+## Part 1
 
-## Answer: 
+### Question 1: In your report, explain the default lifecycle of a JAX-RS Resource class. Is a new instance instantiated for every incoming request, or does the runtime treat it as asingleton? Elaborate on how this architectural decision impacts the way you manage and synchronize your in memory data structures $(maps/lists)$ to prevent data loss or race conditions.
+
+**Answer:** 
 By default, JAX-RS creates a new instance of a resource class for every incoming HTTP request. This is known as per-request scope. This means that any instance variables declared inside a resource class are reset with each request and cannot be used to store persistent data.
 This is why the DataStore class uses static fields for its HashMaps. Static fields belong to the class itself rather than to any instance, meaning they persist in memory regardless of how many resource class instances are created or destroyed. Without static fields, data added in one request would be lost by the next request since a fresh instance would be created.
 In a production system, a database would handle persistence. However, since this coursework requires in-memory storage only, static HashMaps in a dedicated DataStore class provide a simple and effective solution that survives across multiple requests.
 
 ---
 
-## PART 1 Q2: Why is the provision of ”Hypermedia” (links and navigation within responses) considered a hallmark of advanced RESTful design (HATEOAS)? How does this approach benefit client developers compared to static documentation?
+## Question 2: Why is the provision of ”Hypermedia” (links and navigation within responses) considered a hallmark of advanced RESTful design (HATEOAS)? How does this approach benefit client developers compared to static documentation?
 
-## Answer: 
+**Answer:** 
 HATEOAS (Hypermedia as the Engine of Application State) is considered a hallmark of advanced REST design because it makes APIs self-describing. Instead of clients needing to know all available endpoints in advance, each response includes links to related actions and resources, guiding the client on what it can do next.
 For example, the Discovery endpoint in this API returns links to /api/v1/rooms and /api/v1/sensors directly in the response. A client can dynamically discover these endpoints without consulting external documentation.
 Compared to static documentation, HATEOAS benefits client developers because:
