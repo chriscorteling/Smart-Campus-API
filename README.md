@@ -169,3 +169,10 @@ Chris Corteling - w2120078/ 20240644
 University of Westminster – Computer Science
 
 ---
+
+## PART 1 Q : In your report, explain the default lifecycle of a JAX-RS Resource class. Is a new instance instantiated for every incoming request, or does the runtime treat it as asingleton? Elaborate on how this architectural decision impacts the way you manage and synchronize your in memory data structures $(maps/lists)$ to prevent data loss or race conditions.
+
+## Answer: 
+By default, JAX-RS creates a new instance of a resource class for every incoming HTTP request. This is known as per-request scope. This means that any instance variables declared inside a resource class are reset with each request and cannot be used to store persistent data.
+This is why the DataStore class uses static fields for its HashMaps. Static fields belong to the class itself rather than to any instance, meaning they persist in memory regardless of how many resource class instances are created or destroyed. Without static fields, data added in one request would be lost by the next request since a fresh instance would be created.
+In a production system, a database would handle persistence. However, since this coursework requires in-memory storage only, static HashMaps in a dedicated DataStore class provide a simple and effective solution that survives across multiple requests.
