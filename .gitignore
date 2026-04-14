@@ -1,0 +1,17 @@
+target/
+*.class
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+nb-configuration.xml
+
+# Build files
+*.war
+*.jar
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
  * @author chrisrehan
  */
 @Path("/")
-public class DIscoveryResource {
+public class DiscoveryResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
