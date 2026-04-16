@@ -184,11 +184,13 @@ In a production system, a database would handle persistence. In the coursewor it
 ## Question 2: Why is the provision of ”Hypermedia” (links and navigation within responses) considered a hallmark of advanced RESTful design (HATEOAS)? How does this approach benefit client developers compared to static documentation?
 
 **Answer:** 
-HATEOAS (Hypermedia as the Engine of Application State) is considered a hallmark of advanced REST design because it makes APIs self-describing. Instead of clients needing to know all available endpoints in advance, each response includes links to related actions and resources, guiding the client on what it can do next.
+HATEOAS (Hypermedia as the Engine of Application State) is considered a hallmark of advanced REST design because it makes APIs self describing. Clients don’t just get raw data, instead they also get links and navigation instructions that tell them what they can do next, similar to how a browser follows links in HTML
 For example, the Discovery endpoint in this API returns links to /api/v1/rooms and /api/v1/sensors directly in the response. A client can dynamically discover these endpoints without consulting external documentation.
 Compared to static documentation, HATEOAS benefits client developers because:
 
 i. If URLs change, clients automatically get the updated links without needing documentation updates
+
 ii. New endpoints can be discovered at runtime rather than hardcoded
+
 iii. It reduces tight coupling between client and server — the client follows links rather than constructing URLs manually
 
