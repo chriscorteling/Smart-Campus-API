@@ -7,6 +7,7 @@ package com.smartcampus.smart.campus.api;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.DELETE;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -18,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 /**
  *
  * @author chrisrehan
  */
+//Question 2.1
 @Path("/rooms")
 public class RoomResource {
 
@@ -66,9 +67,34 @@ public class RoomResource {
         if (room == null) {
             return Response.status(404).build();
         }
-        
+
         //return success status code
         return Response.ok(room).build();
 
     }
+
+    //Question 2.2
+    @DELETE
+    @Path("/{roomId}")
+    public Response deleteRoom(@PathParam("roomId") String roomId) {
+
+        //Check if the room is null or not
+        Room room = DataStore.rooms.get(roomId);
+        if (room == null) {
+            return Response.status(404).build();
+        }
+        
+        //Check if the room has sensor
+        if (!room.getSensorIds().isEmpty()) {
+            return Response.status(409).build();
+        }
+        
+        //Delete the specific room usig roomId
+        DataStore.rooms.remove(roomId);
+
+        //return status code
+        return Response.status(204).build();
+
+    }
+
 }

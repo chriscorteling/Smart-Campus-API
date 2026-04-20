@@ -170,7 +170,7 @@ University of Westminster – Computer Science
 
 ---
 
-## Part 1
+# Part 1
 
 ### Question 1: In your report, explain the default lifecycle of a JAX-RS Resource class. Is a new instance instantiated for every incoming request, or does the runtime treat it as asingleton? Elaborate on how this architectural decision impacts the way you manage and synchronize your in memory data structures $(maps/lists)$ to prevent data loss or race conditions.
 
@@ -194,3 +194,23 @@ ii. New endpoints can be discovered at runtime rather than hardcoded
 
 iii. It reduces tight coupling between client and server — the client follows links rather than constructing URLs manually
 
+---
+
+# PART 2
+
+## Question 1:  Is the DELETE operation idempotent in your implementation? Provide a detailed justification by describing what happens if a client mistakenly sends the exact same DELETE request for a room multiple times.
+
+**Answer:**  
+Yes, the DELETE operation is idempotent in standard HTTP implementations, including what would be expected in my context as an AI discussing API behaviors. Idempotence requires that multiple identical requests produce the same effect on the server state, regardless of varying response codes.
+
+Server State Outcome
+When a client sends the same DELETE request for a room multiple times:
+
+First request: Room exists, so it's deleted, returning 204 No Content.
+
+Subsequent requests: Room no longer exists, so server returns 404 Not Found, with no further changes.
+
+The server's state remains identical after the first deletion— the room is gone—fulfilling idempotence as defined by RFC 7231, which emphasizes consistent side effects on the resource, not response codes.
+
+Response Code Difference
+Different status codes (204 vs. 404) do not violate idempotence, as standards like MDN and Stack Overflow clarify that only the backend state matters; clients retrying safely achieve the same result. This aligns with REST best practices where DELETE is explicitly idempotent.
