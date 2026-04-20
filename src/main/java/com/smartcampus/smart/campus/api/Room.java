@@ -25,11 +25,11 @@ public class Room {
         
     }
     
-    public Room(String id, String name, int capacity, List<String> sensorId){
+    public Room(String id, String name, int capacity){
         this.id = id;
         this.name = name;
         this.capacity = capacity;
-        this.sensorIds = sensorId;
+        
     }
     
     //Getters for attributes

@@ -1,5 +1,7 @@
 package com.smartcampus.smart.campus.api;
 
+import java.util.UUID;
+
 /**
  *
  * @author chrisrehan
@@ -14,13 +16,17 @@ public class SensorReading {
     
     //Empty Constructor
     public SensorReading(){
-        
+        this.id = UUID.randomUUID().toString();
+        this.timestamp = System.currentTimeMillis();
     }
     
-    public SensorReading(String id, long timestamp, double value){
-        this.id = id;
-        this.timestamp = timestamp;
+    public SensorReading(double value){
         this.value = value;
+             
+        //Auto generations
+        this.id = UUID.randomUUID().toString(); 
+        this.timestamp = System.currentTimeMillis();
+        
     }
         
     //Getters for the attributes
@@ -48,6 +54,7 @@ public class SensorReading {
     
     public void setValue(double value){
         this.value = value;
+   
     }
     
 }

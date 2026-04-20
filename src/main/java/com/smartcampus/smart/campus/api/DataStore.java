@@ -5,7 +5,7 @@
 package com.smartcampus.smart.campus.api;
 
 import java.util.List;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 /**
@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class DataStore {
     
-    public static Map<String, Room> rooms = new HashMap<>();
-    public static Map<String, Sensor> sensors = new HashMap<>();
-    public static Map<String, List<SensorReading>> sensorReadings = new HashMap<>();
+    public static Map<String, Room> rooms = new ConcurrentHashMap<>();
+    public static Map<String, Sensor> sensors = new ConcurrentHashMap<>();
+    public static Map<String, List<SensorReading>> sensorReadings = new ConcurrentHashMap<>();
     
 }
