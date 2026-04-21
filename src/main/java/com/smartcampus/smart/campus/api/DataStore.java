@@ -4,6 +4,9 @@
  */
 package com.smartcampus.smart.campus.api;
 
+import com.smartcampus.smart.campus.api.models.SensorReading;
+import com.smartcampus.smart.campus.api.models.Sensor;
+import com.smartcampus.smart.campus.api.models.Room;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;

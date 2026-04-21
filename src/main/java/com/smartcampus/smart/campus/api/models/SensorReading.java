@@ -1,4 +1,4 @@
-package com.smartcampus.smart.campus.api;
+package com.smartcampus.smart.campus.api.models;
 
 import java.util.UUID;
 

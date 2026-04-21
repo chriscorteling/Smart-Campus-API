@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.smartcampus.smart.campus.api;
+package com.smartcampus.smart.campus.api.exceptions;
 
+import com.smartcampus.smart.campus.api.exceptions.LinkedResourceNotFoundException;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -15,21 +16,23 @@ import javax.ws.rs.core.MediaType;
 
 
 /**
- * 
+ *
  * @author chrisrehan
  */
 
+//Part 5
+
 @Provider
-public class RoomNotEmptyExceptionMapper implements ExceptionMapper<RoomNotEmptyException>{
+public class LinkedResourceNotFoundExceptionMapper implements ExceptionMapper<LinkedResourceNotFoundException>{
     
-    public Response toResponse(RoomNotEmptyException exception){
+    public Response toResponse(LinkedResourceNotFoundException exception){
         //Mapping the error
         Map<String, String> errorMap = new HashMap<>();
         
         //Adding the error message
-        errorMap.put("error", "Room cannot be deleted as it still has sensors assigned to it");
+        errorMap.put("error", "The referenced roomId does not exist in the system");
         
         //return the status code with the relevat error
-        return Response.status(409).entity(errorMap).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(422).entity(errorMap).type(MediaType.APPLICATION_JSON).build();
     }
 }
