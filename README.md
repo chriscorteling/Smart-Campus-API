@@ -208,41 +208,6 @@ Expected response: `422 Unprocessable Entity`
 
 ## ❓ Coursework Questions & Answers
 
-### 1. What is REST?
-
-REST (Representational State Transfer) is an architectural style for designing web services.
-It uses HTTP methods (GET, POST, PUT, DELETE) and is stateless.
-
----
-
-### 2. Difference between GET and POST
-
-* GET → Retrieve data from the server
-* POST → Send data to the server to create/update resources
-
----
-
-### 3. Why use Maven?
-
-Maven is used for:
-
-* Managing dependencies
-* Building the project
-* Standardizing project structure
-
----
-
-### 4. What is a WAR file?
-
-A WAR (Web Application Archive) file is a packaged Java web application used for deployment on servers like Tomcat.
-
----
-
-### 5. What is JSON?
-
-JSON (JavaScript Object Notation) is a lightweight format used to exchange data between client and server.
-
----
 
 ## 👤 Author
 
