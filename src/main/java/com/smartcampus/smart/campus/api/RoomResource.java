@@ -84,10 +84,10 @@ public class RoomResource {
             return Response.status(404).build();
         }
         
-        //Check if the room has sensor
-        if (!room.getSensorIds().isEmpty()) {
-            return Response.status(409).build();
-        }
+        //Check if the room has sensor and throws an exception
+        if (!room.getSensorIds().isEmpty()) throw new RoomNotEmptyException("Room still has sensors"); 
+            
+        
         
         //Delete the specific room usig roomId
         DataStore.rooms.remove(roomId);

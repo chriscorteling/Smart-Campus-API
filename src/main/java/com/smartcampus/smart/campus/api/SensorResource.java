@@ -35,10 +35,8 @@ public class SensorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createSensors(Sensor sensor) {
 
-        //Check if the roomId exists
-        if (!DataStore.rooms.containsKey(sensor.getRoomId())) {
-            return Response.status(422).build();
-        }
+        //Check if the roomId exists and throw
+        if (!DataStore.rooms.containsKey(sensor.getRoomId())) throw new LinkedResourceNotFoundException("Room not found");
 
         //Generate ID if missing
         if (sensor.getId() == null || sensor.getId().isEmpty()) {

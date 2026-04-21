@@ -50,10 +50,8 @@ public class SensorReadingResource {
             return Response.status(404).build();
         }
 
-        //check if status is "MAINTENANCE"
-        if (sensor.getStatus().equals("MAINTENANCE")) {
-            return Response.status(403).build();
-        }
+        //check if status is "MAINTENANCE" and throws exception 
+        if (sensor.getStatus().equals("MAINTENANCE")) throw new SensorUnavailableException("Sensor is under maintenance");
 
         //Add reading to the List
         DataStore.sensorReadings.get(sensorId).add(reading);
