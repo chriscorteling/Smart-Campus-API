@@ -1,131 +1,212 @@
 # Smart Campus API
-
-## 📌 Overview
-
-The Smart Campus API is a RESTful web service developed using Java and Maven.
-It simulates a smart campus environment by managing resources such as rooms, sensors, and sensor readings.
-
-The API allows clients to:
-
-* Discover available endpoints
-* Retrieve room and sensor data
-* Submit and view sensor readings
-
-This project demonstrates the use of REST principles, HTTP methods, and structured API design.
-
+ 
+## Overview
+ 
+The Smart Campus API is a RESTful web service built using JAX-RS (Jersey) and deployed on Apache Tomcat. It simulates a smart campus environment by managing three core resources: Rooms, Sensors, and Sensor Readings.
+ 
+The API allows campus facilities managers and automated building systems to:
+- Create and manage rooms across the campus
+- Register sensors (Temperature, CO2, Occupancy, etc.) and link them to rooms
+- Record and retrieve sensor readings with automatic timestamping
+- Safely decommission rooms and sensors with business logic constraints
+**Base URL:** `http://localhost:8080/Smart-Campus-API/api/v1`
+ 
+**Technology Stack:**
+- Java with JAX-RS (Jersey 2.39.1)
+- Apache Tomcat (embedded via NetBeans)
+- Jackson for JSON serialization
+- In-memory storage using ConcurrentHashMap
 ---
-
-## ⚙️ Technologies Used
-
-* Java
-* Maven
-* Jakarta REST (JAX-RS)
-* Apache Tomcat (for deployment)
-
+ 
+## Project Structure
+ 
+```
+src/main/java/com/smartcampus/smart/campus/api/
+├── DataStore.java                          # Shared in-memory data store
+├── SmartCampusApp.java                     # JAX-RS Application entry point
+├── models/
+│   ├── Room.java                           # Room POJO
+│   ├── Sensor.java                         # Sensor POJO
+│   └── SensorReading.java                  # SensorReading POJO
+├── resources/
+│   ├── DiscoveryResource.java              # GET /api/v1
+│   ├── RoomResource.java                   # /api/v1/rooms
+│   ├── SensorResource.java                 # /api/v1/sensors
+│   └── SensorReadingResource.java          # /api/v1/sensors/{id}/readings
+└── exceptions/
+    ├── RoomNotEmptyException.java
+    ├── RoomNotEmptyExceptionMapper.java
+    ├── LinkedResourceNotFoundException.java
+    ├── LinkedResourceNotFoundExceptionMapper.java
+    ├── SensorUnavailableException.java
+    ├── SensorUnavailableExceptionMapper.java
+    ├── GlobalExceptionMapper.java
+    └── LoggingFilter.java
+```
+ 
 ---
-
-## 🚀 How to Build and Run
-
-### 1. Clone the repository
-
+ 
+## How to Build and Run
+ 
+### Prerequisites
+- Apache NetBeans IDE 28 (or later)
+- JDK 11 or higher
+- Apache Tomcat (configured in NetBeans)
+- Maven (bundled with NetBeans)
+### Step 1 — Clone the Repository
 ```bash
 git clone https://github.com/chriscorteling/Smart-Campus-API.git
 cd Smart-Campus-API
 ```
-
-### 2. Build the project
-
+ 
+### Step 2 — Open in NetBeans
+1. Open **Apache NetBeans**
+2. Click **File → Open Project**
+3. Navigate to the cloned folder and select it
+4. Click **Open Project**
+### Step 3 — Build the Project
+1. Right-click the project in the Projects panel
+2. Click **Clean and Build**
+3. Wait for **BUILD SUCCESS** in the output panel
+### Step 4 — Configure Tomcat (if not already set up)
+1. Go to **Tools → Servers**
+2. Click **Add Server**
+3. Select **Apache Tomcat** and follow the setup wizard
+### Step 5 — Run the Project
+1. Right-click the project
+2. Click **Run**
+3. NetBeans will deploy to Tomcat automatically
+4. Server starts at: `http://localhost:8080/Smart-Campus-API/`
+### Step 6 — Verify the API is Running
+Open your browser and go to:
+```
+http://localhost:8080/Smart-Campus-API/api/v1
+```
+You should see:
+```json
+{
+    "version": "1.0",
+    "contact": "admin@smartcampus.com",
+    "resources": {
+        "rooms": "/api/v1/rooms",
+        "sensors": "/api/v1/sensors"
+    }
+}
+```
+ 
+---
+ 
+## API Endpoints
+ 
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/v1 | Discovery endpoint |
+| GET | /api/v1/rooms | Get all rooms |
+| POST | /api/v1/rooms | Create a new room |
+| GET | /api/v1/rooms/{roomId} | Get room by ID |
+| DELETE | /api/v1/rooms/{roomId} | Delete a room |
+| GET | /api/v1/sensors | Get all sensors (optional ?type= filter) |
+| POST | /api/v1/sensors | Register a new sensor |
+| GET | /api/v1/sensors/{sensorId}/readings | Get all readings for a sensor |
+| POST | /api/v1/sensors/{sensorId}/readings | Add a new reading |
+ 
+---
+ 
+## Sample curl Commands
+ 
+### 1. Create a Room
 ```bash
-mvn clean package
+curl -X POST http://localhost:8080/Smart-Campus-API/api/v1/rooms \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "LIB-301",
+    "name": "Library Quiet Study",
+    "capacity": 50
+  }'
 ```
-
-### 3. Deploy the application
-
-* Copy the generated `.war` file from:
-
-  ```
-  target/Smart-Campus-API-1.0-SNAPSHOT.war
-  ```
-* Place it inside the `webapps` folder of Apache Tomcat
-* Start Tomcat server
-
-### 4. Access the API
-
-```
-http://localhost:8080/Smart-Campus-API/api/
-```
-
+Expected response: `201 Created`
+ 
 ---
-
-## 📡 API Endpoints
-
-### 🔹 1. Discover API
-
+ 
+### 2. Register a Sensor
 ```bash
-curl -X GET http://localhost:8080/Smart-Campus-API/api/discovery
+curl -X POST http://localhost:8080/Smart-Campus-API/api/v1/sensors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "TEMP-001",
+    "type": "Temperature",
+    "status": "ACTIVE",
+    "currentValue": 22.5,
+    "roomId": "LIB-301"
+  }'
 ```
-
+Expected response: `201 Created`
+ 
 ---
-
-### 🔹 2. Get all rooms
-
+ 
+### 3. Get All Sensors Filtered by Type
 ```bash
-curl -X GET http://localhost:8080/Smart-Campus-API/api/rooms
+curl -X GET "http://localhost:8080/Smart-Campus-API/api/v1/sensors?type=Temperature"
 ```
-
+Expected response: `200 OK` with list of Temperature sensors
+ 
 ---
-
-### 🔹 3. Get all sensors
-
+ 
+### 4. Post a Sensor Reading
 ```bash
-curl -X GET http://localhost:8080/Smart-Campus-API/api/sensors
+curl -X POST http://localhost:8080/Smart-Campus-API/api/v1/sensors/TEMP-001/readings \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": 25.5
+  }'
 ```
-
+Expected response: `201 Created` with auto-generated id and timestamp
+ 
 ---
-
-### 🔹 4. Get sensor readings
-
+ 
+### 5. Get All Readings for a Sensor
 ```bash
-curl -X GET http://localhost:8080/Smart-Campus-API/api/readings
+curl -X GET http://localhost:8080/Smart-Campus-API/api/v1/sensors/TEMP-001/readings
 ```
-
+Expected response: `200 OK` with list of readings
+ 
 ---
-
-### 🔹 5. Add a new sensor reading
-
+ 
+### 6. Attempt to Delete a Room with Active Sensors (409 Conflict)
 ```bash
-curl -X POST http://localhost:8080/Smart-Campus-API/api/readings \
--H "Content-Type: application/json" \
--d '{"sensorId":1,"value":25.5}'
+curl -X DELETE http://localhost:8080/Smart-Campus-API/api/v1/rooms/LIB-301
+```
+Expected response: `409 Conflict`
+```json
+{
+    "error": "Room cannot be deleted as it still has sensors assigned to it"
+}
+```
+ 
+---
+ 
+### 7. Attempt to Register Sensor with Invalid roomId (422 Error)
+```bash
+curl -X POST http://localhost:8080/Smart-Campus-API/api/v1/sensors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "TEMP-999",
+    "type": "Temperature",
+    "status": "ACTIVE",
+    "currentValue": 0.0,
+    "roomId": "FAKE-999"
+  }'
+```
+Expected response: `422 Unprocessable Entity`
+```json
+{
+    "error": "The referenced roomId does not exist in the system"
+}
 ```
 
 ---
 
-## 🧪 Testing
-
-You can test endpoints using:
-
-* curl (command line)
-* Postman
-* Browser (for GET requests)
-
----
-
-## 📂 Project Structure
-
-```
-Smart-Campus-API/
-├── src/
-│   ├── main/
-│   └── test/
-├── pom.xml
-├── .gitignore
-├── README.md
-```
-
----
-
-## ❓ Coursework Questions (Summary)
+## ❓ Coursework Questions & Answers
 
 ### 1. What is REST?
 
