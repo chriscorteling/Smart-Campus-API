@@ -4,6 +4,8 @@
  */
 package com.smartcampus.smart.campus.api.resources;
 
+import java.util.logging.Logger;
+
 import com.smartcampus.smart.campus.api.DataStore;
 import com.smartcampus.smart.campus.api.exceptions.LinkedResourceNotFoundException;
 import com.smartcampus.smart.campus.api.models.Sensor;
@@ -33,13 +35,22 @@ import javax.ws.rs.PathParam;
 @Path("/sensors")
 public class SensorResource {
 
+    private static final Logger logger = Logger.getLogger(SensorResource.class.getName());
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createSensors(Sensor sensor) {
 
         //Check if the roomId exists and throw
-        if (!DataStore.rooms.containsKey(sensor.getRoomId())) throw new LinkedResourceNotFoundException("Room not found");
+        if (!DataStore.rooms.containsKey(sensor.getRoomId())){
+            
+            //Log invalid roomId warning
+            logger.warning("Invalid roomId: " + sensor.getRoomId());
+            
+            throw new LinkedResourceNotFoundException("Room not found");
+        }
+        
 
         //Generate ID if missing
         if (sensor.getId() == null || sensor.getId().isEmpty()) {
@@ -54,6 +65,9 @@ public class SensorResource {
 
         //Initialise empty readings list
         DataStore.sensorReadings.put(sensor.getId(), new ArrayList<>());
+        
+        //Log sensor creation
+        logger.info("Sensor created: " + sensor.getId());
 
         //return status code
         return Response.status(201).entity(sensor).build();

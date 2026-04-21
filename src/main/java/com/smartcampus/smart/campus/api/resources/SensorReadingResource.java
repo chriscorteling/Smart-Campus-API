@@ -4,6 +4,8 @@
  */
 package com.smartcampus.smart.campus.api.resources;
 
+import java.util.logging.Logger;
+
 import com.smartcampus.smart.campus.api.DataStore;
 import com.smartcampus.smart.campus.api.exceptions.SensorUnavailableException;
 import com.smartcampus.smart.campus.api.models.SensorReading;
@@ -25,7 +27,11 @@ import java.util.List;
 //Part 4
 public class SensorReadingResource {
 
+    
     private String sensorId;
+    
+    //Logger field at class level
+    private static final Logger logger = Logger.getLogger(SensorReadingResource.class.getName());
 
     public SensorReadingResource(String sensorId) {
         this.sensorId = sensorId;
@@ -46,11 +52,13 @@ public class SensorReadingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addReadings(SensorReading reading) {
-
+      
         Sensor sensor = DataStore.sensors.get(sensorId);
 
         //Check if sensor is not in DataStore
         if (sensor == null) {
+            
+            logger.warning("Sensor not found: " + sensorId);
             return Response.status(404).build();
         }
 
@@ -59,6 +67,9 @@ public class SensorReadingResource {
 
         //Add reading to the List
         DataStore.sensorReadings.get(sensorId).add(reading);
+        
+        //Log reading added
+        logger.info("Reading added to sensor: " + sensorId);
 
         //Update parent sensor currentValue
         sensor.setCurrentValue(reading.getValue());

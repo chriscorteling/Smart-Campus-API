@@ -4,6 +4,8 @@
  */
 package com.smartcampus.smart.campus.api.resources;
 
+import java.util.logging.Logger;
+
 import com.smartcampus.smart.campus.api.DataStore;
 import com.smartcampus.smart.campus.api.exceptions.RoomNotEmptyException;
 import com.smartcampus.smart.campus.api.models.Room;
@@ -30,16 +32,18 @@ import java.util.UUID;
 @Path("/rooms")
 public class RoomResource {
 
+    // Field at class level
+    private static final Logger logger = Logger.getLogger(RoomResource.class.getName());
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllRooms() {
 
-        //Saving room details in DataStore into roomList 
+        //Store the rooms into List called roomList
         List<Room> roomList = new ArrayList<>(DataStore.rooms.values());
 
-        //return the status code
+        //return status code
         return Response.ok(roomList).build();
-
     }
 
     @POST
@@ -55,6 +59,9 @@ public class RoomResource {
         //Save in DataStore
         DataStore.rooms.put(room.getId(), room);
 
+        //Log the room creation
+        logger.info("Room created: " + room.getId());
+
         //return the status code
         return Response.status(201).entity(room).build();
 
@@ -68,9 +75,14 @@ public class RoomResource {
         //Check the room details and if empty we give the status code
         Room room = DataStore.rooms.get(roomId);
         if (room == null) {
-            return Response.status(404).build();
-        }
 
+            //Log the room not found warning
+            logger.warning("Room not found: " + roomId);
+
+            //return status code
+            return Response.status(404).build();
+
+        }
         //return success status code
         return Response.ok(room).build();
 
@@ -84,16 +96,25 @@ public class RoomResource {
         //Check if the room is null or not
         Room room = DataStore.rooms.get(roomId);
         if (room == null) {
+
+            //Log room not found warning
+            logger.warning("Room not found for deletion: " + roomId);
+
             return Response.status(404).build();
         }
-        
+
         //Check if the room has sensor and throws an exception
-        if (!room.getSensorIds().isEmpty()) throw new RoomNotEmptyException("Room still has sensors"); 
-            
-        
-        
+        if (!room.getSensorIds().isEmpty()) {
+
+            logger.warning("Room deletion blocked - sensors still assigned: " + roomId);
+            throw new RoomNotEmptyException("Room still has sensors");
+        }
+
         //Delete the specific room usig roomId
         DataStore.rooms.remove(roomId);
+
+        //Log successful deletion
+        logger.info("Room deleted: " + roomId);
 
         //return status code
         return Response.status(204).build();
