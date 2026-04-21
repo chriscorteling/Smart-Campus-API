@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 
 /**
  *
@@ -67,21 +68,28 @@ public class SensorResource {
         //return all the sensors if type is null or empty
         if (type == null || type.isEmpty()) {
             return Response.ok(sensorList).build();
-            
-        }else{
-           
+
+        } else {
+
             //if the type is not empty or null return the filtered sensors
             List<Sensor> filteredSensorList = new ArrayList<>();
-            for (Sensor sensor : sensorList){
-                
-                if (sensor.getType().equals(type)){
+            for (Sensor sensor : sensorList) {
+
+                if (sensor.getType().equals(type)) {
                     filteredSensorList.add(sensor);
+                }
+
             }
-            
+
+            //retrun status code 200 but inside parameters we gives the List name to retreive exact data
+            return Response.ok(filteredSensorList).build();
         }
-            
-        //retrun status code 200 but inside parameters we gives the List name to retreive exact data
-        return Response.ok(filteredSensorList).build();
     }
-  }
+
+    //Part 4 - Sub Resource Locator
+    @Path("{sensorId}/readings")
+    public SensorReadingResource getReadingsResource(@PathParam("sensorId") String sensorId) {
+        return new SensorReadingResource(sensorId);
+    }
+
 }
