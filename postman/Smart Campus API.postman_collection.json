@@ -1,0 +1,337 @@
+{
+  "info": {
+    "_postman_id": "9930d9ac-18c3-41d2-9dc5-7122f8944d74",
+    "name": "Smart Campus API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52803972",
+    "_collection_link": "https://go.postman.co/collection/52803972-9930d9ac-18c3-41d2-9dc5-7122f8944d74?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "CREATE room with new ID",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"CAFE-303\",\n    \"name\": \"Cafeteria room\",\n    \"capacity\": 350\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/rooms",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "rooms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET all rooms",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/rooms",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "rooms"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET room by ID",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/rooms/CAFE-303",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "rooms",
+            "CAFE-303"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE room by ID",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/rooms/LIB-301",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "rooms",
+            "LIB-301"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CREATE sensor",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"TEMP-003\",\n    \"type\": \"Temperature\",\n    \"status\": \"MAINTENANCE\",\n    \"currentValue\": 29.5,\n    \"roomId\": \"CAFE-303\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FAKE test",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"TEMP-001\",\n    \"type\": \"Temperature\",\n    \"status\": \"ACTIVE\",\n    \"currentValue\": 22.5,\n    \"roomId\": \"FAKE-999\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET sensors",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET sensor by type",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"TEMP-001\",\n    \"type\": \"Temperature\",\n    \"status\": \"ACTIVE\",\n    \"currentValue\": 22.5,\n    \"roomId\": \"LIB-301\"\n}"
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors?type=Temperature",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors"
+          ],
+          "query": [
+            {
+              "key": "type",
+              "value": "Temperature"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CREATE sensor reading",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"value\": 22.5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors/TEMP-003/readings",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors",
+            "TEMP-003",
+            "readings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET sensor reading",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors/TEMP-003/readings",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors",
+            "TEMP-003",
+            "readings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Maintenance sensor",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/sensors/TEMP-003/readings",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "sensors",
+            "TEMP-003",
+            "readings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE Maintenance room id",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/Smart-Campus-API/api/v1/rooms/LIB-301",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "Smart-Campus-API",
+            "api",
+            "v1",
+            "rooms",
+            "LIB-301"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
